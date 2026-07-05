@@ -104,6 +104,61 @@
             text-align: center;
         }
 
+        /* 充电文字：高级玫瑰金流光动效（从左往右缓慢流动） */
+        .donate-flow {
+            display: inline-block;
+            font-size: 17px;
+            font-weight: bold;
+            text-decoration: none;
+            letter-spacing: 1px;
+            cursor: pointer;
+            background-image: linear-gradient(
+                90deg,
+                #FFD700 0%,
+                #FF6B9D 10%,
+                #FF4757 20%,
+                #E84393 30%,
+                #FD79A8 40%,
+                #A29BFE 50%,
+                #6C5CE7 60%,
+                #0984E3 70%,
+                #00B894 80%,
+                #FDCB6E 90%,
+                #FFD700 100%
+            );
+            /* 关键：background-size 与动画位移必须匹配一个完整周期，否则会跳变 */
+            background-size: 200% auto;
+            background-repeat: repeat;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            animation: donateFlow 10s linear infinite;
+            transition: transform 0.3s ease;
+        }
+
+        .donate-flow:hover {
+            transform: scale(1.05);
+        }
+
+        /* 0% → 200% 正好移动一个图片宽度(2W)，配合首尾同色实现真正无缝循环 */
+        @keyframes donateFlow {
+            0% {
+                background-position: 0% center;
+            }
+            100% {
+                background-position: -200% center;
+            }
+        }
+
+        /* 旧浏览器降级：若不支持 background-clip:text 则显示金色 */
+        @supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+            .donate-flow {
+                -webkit-text-fill-color: initial;
+                color: #E84393;
+            }
+        }
+
         .collapse-btn {
             display: inline-block;
             padding: 6px 16px;
@@ -237,7 +292,7 @@
         <p style="text-align:center;color:#666;">免费开源 | 持续更新 | 安全无广</p>
 
         <div class="donate-box">
-            <p><a href="javascript:void(0)" onclick="showPayCanvas()">可点击此处为我充电, 不胜感激 !</a></p>
+            <p><a href="javascript:void(0)" onclick="showPayCanvas()" class="donate-flow">可点击此处为我充电, 不胜感激 !</a></p>
             <p>本作品非付费软件，仅供学习交流！<br>下载试用后请在24小时内主动删除！<br>纯净软件，代码开源，如有报毒为误报</p>
         </div>
 
