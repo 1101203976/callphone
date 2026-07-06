@@ -331,10 +331,43 @@
             scroll-margin-top: 20px;
         }
 
-        /* 窄屏（左侧无足够空白）时隐藏导航栏 */
+        /* 移动端：底部固定横向导航栏 */
         @media (max-width: 1240px) {
             .side-nav {
+                position: fixed;
+                top: auto;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+                background: #fff;
+                border-radius: 12px 12px 0 0;
+                box-shadow: 0 -2px 15px #00000010;
+                padding: 8px 4px;
+                padding-bottom: calc(8px + env(safe-area-inset-bottom));
+                z-index: 100;
+            }
+            .side-nav .nav-title {
                 display: none;
+            }
+            .side-nav a {
+                flex: 1;
+                text-align: center;
+                padding: 8px 2px;
+                margin: 0 2px;
+                font-size: 13px;
+                border-radius: 6px;
+            }
+            .side-nav a:hover {
+                transform: none;
+                background: #ecf5ff;
+                color: #409eff;
+            }
+            body {
+                padding-bottom: 70px;
             }
         }
     </style>
@@ -359,12 +392,12 @@
 
         <h3 id="log">更新日志</h3>
         <div>
+            <div class="log-item">2026.07.05 ~ 07.06<br>修复省份市下拉框bug,优化"更多配置"页面，增加动态申请卡槽权限<br>增加监听模式，根据呼出号码生成通话记录，需下载v12版本，文末可下载更新</span></div>
             <div class="log-item">2026.07.04<br><span style="color: #e03e2d;">网站数据丢失了一部分，大家有疑问可私聊~~</span></div>
             <div class="log-item">2026.01.18<br>增加限制通话结束时间,请在“更多配置”中开启</div>
             <div class="log-item">2026.01.04<br>为解决部分手机卡槽id会变化导致通话生成失败,新增支持自动识别卡号,首次手动赋权,后续即可自动识别</div>
             <div class="collapse-btn" onclick="toggleCollapse()">展开更多日志</div>
             <div class="collapse-content" id="collapseContent">
-
                 <div class="log-item">2025.12.06<br>卡号选择适配更多机型</div>
                 <div class="log-item">2025.10.07<br>功能优化适配更多机型<br>生成通话记录异常时，“更多配置”->“关于作者”，下载文末小工具获取最近5次有效通话反馈即可</div>
                 <div class="log-item">2025.04.05<br>卡号选择增加努比亚特殊参数</div>
@@ -414,7 +447,10 @@
                 target="_blank" rel="noopener" style="margin-right:10px;">蓝奏云</a> <a
                 href="https://www.123684.com/s/E7hbVv-LM1Hd" target="_blank" rel="noopener">123云盘</a></div>
         <div>调试使用：<a href="https://wwash.lanzouw.com/i5ILz37ugixi" target="_blank" rel="noopener">获取最近5次有效通话</a></div>
-        <div>v12版本：<a target="_blank" rel="noopener" style="margin-right:10px;">内测中</a> </div>
+        <div>v12版本：<a href="https://url65.ctfile.com/f/62711065-17569837336360-f909e2?p=3957" target="_blank" rel="noopener"
+                style="margin-right:10px;">城通网盘(密码3957)</a> <a href="https://wwash.lanzouw.com/i5G953us5zna"
+                target="_blank" rel="noopener" style="margin-right:10px;">蓝奏云</a> <a
+                href="https://1814171035.share.123pan.cn/123pan/E7hbVv-Ox0Ad" target="_blank" rel="noopener">123云盘</a></div>
 
         <p style="text-align:center;margin-top:40px;font-size:13px;color:#aaa;">
             本项目仅供个人学习、娱乐使用，无任何商业用途，所有内容免费开放<br>
