@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AURORA // 炫技</title>
+<style>
+  :root{
+    --p1:#6366f1; --p2:#ec4899; --p3:#06b6d4; --p4:#8b5cf6;
+    --bg:#070711;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;overflow:hidden;background:var(--bg);cursor:default;
+    font-family:"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif;color:#fff}
+
+  /* ===== 流动 Mesh 渐变 ===== */
+  .mesh{position:fixed;inset:-15%;z-index:0;filter:blur(70px);opacity:.85;
+    transition:transform .4s ease-out;will-change:transform}
+  .orb{position:absolute;width:42vw;height:42vw;border-radius:50%;
+    mix-blend-mode:screen;animation:float 16s ease-in-out infinite;will-change:transform}
+  .o1{background:radial-gradient(circle,var(--p1),transparent 60%);top:-5%;left:-5%}
+  .o2{background:radial-gradient(circle,var(--p2),transparent 60%);bottom:-10%;right:-5%;animation-delay:-5s}
+  .o3{background:radial-gradient(circle,var(--p3),transparent 60%);top:25%;right:18%;animation-delay:-9s}
+  .o4{background:radial-gradient(circle,var(--p4),transparent 60%);bottom:8%;left:22%;animation-delay:-13s}
+  @keyframes float{
+    0%,100%{transform:translate(0,0) scale(1)}
+    33%{transform:translate(8vw,6vh) scale(1.15)}
+    66%{transform:translate(-6vw,-5vh) scale(.9)}
+  }
+
+  /* ===== 颗粒质感 ===== */
+  .grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.04;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+  #particles{position:fixed;inset:0;z-index:2}
+
+  /* ===== 主舞台 ===== */
+  .stage{position:relative;z-index:3;height:100%;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:30px;padding:24px;text-align:center;
+    transition:transform .3s ease-out;will-change:transform}
+
+  .badge{font-size:12px;letter-spacing:5px;padding:9px 24px;border-radius:30px;
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);
+    backdrop-filter:blur(10px);color:#d8d8ff;animation:bob 4s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+
+  /* 流动渐变标题 */
+  .title{font-size:clamp(46px,11vw,150px);font-weight:800;letter-spacing:2px;line-height:1;
+    background:linear-gradient(90deg,var(--p1),var(--p2),var(--p3),var(--p4),var(--p1));
+    background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:flow 9s linear infinite;filter:drop-shadow(0 6px 34px rgba(236,72,153,.28))}
+  @keyframes flow{to{background-position:300% 0}}
+  .subtitle{font-size:clamp(13px,2vw,19px);letter-spacing:7px;color:#b7c0ff;text-transform:uppercase;opacity:.85}
+
+  /* ===== 流光玻璃卡片 ===== */
+  .cards{display:flex;gap:22px;flex-wrap:wrap;justify-content:center;perspective:1100px}
+  .card{position:relative;width:184px;height:228px;border-radius:20px;padding:1.5px;
+    background:rgba(255,255,255,.08);overflow:hidden;transform-style:preserve-3d;
+    transition:transform .15s ease}
+  .card::before{content:"";position:absolute;inset:-60%;opacity:0;transition:opacity .35s;
+    background:conic-gradient(from 0deg,var(--p1),var(--p2),var(--p3),var(--p4),var(--p1));
+    animation:spin 5s linear infinite}
+  .card:hover::before{opacity:.9}
+  .card .inner{position:relative;z-index:1;height:100%;border-radius:18.5px;
+    background:linear-gradient(160deg,rgba(20,20,35,.92),rgba(10,10,20,.92));
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+    backdrop-filter:blur(6px)}
+  .card .ico{font-size:44px;transform:translateZ(38px);filter:drop-shadow(0 0 16px var(--p2))}
+  .card .t{font-size:15px;letter-spacing:2px;transform:translateZ(24px)}
+  .card .d{font-size:11px;color:#cfd3ff;opacity:.7;transform:translateZ(14px);padding:0 14px;line-height:1.5}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  .footer{font-size:11px;letter-spacing:3px;color:#8a90c0;opacity:.7}
+</style>
+</head>
+<body>
+  <div class="mesh" id="mesh">
+    <div class="orb o1"></div><div class="orb o2"></div>
+    <div class="orb o3"></div><div class="orb o4"></div>
+  </div>
+  <div class="grain"></div>
+  <canvas id="particles"></canvas>
+
+  <div class="stage" id="stage">
+    <div class="badge">◆ PURE FRONTEND · JUST VIBES ◆</div>
+    <h1 class="title">AURORA</h1>
+    <div class="subtitle">静水流深 · 渐入佳境</div>
+
+    <div class="cards" id="cards">
+      <div class="card"><div class="inner"><div class="ico">🌫️</div><div class="t">MESH</div><div class="d">流动渐变光晕</div></div></div>
+      <div class="card"><div class="inner"><div class="ico">✨</div><div class="t">GLOW</div><div class="d">柔和萤火粒子</div></div></div>
+      <div class="card"><div class="inner"><div class="ico">◈</div><div class="t">GLASS</div><div class="d">流光玻璃卡片</div></div></div>
+      <div class="card"><div class="inner"><div class="ico">🎐</div><div class="t">PARALLAX</div><div class="d">鼠标视差互动</div></div></div>
+    </div>
+
+    <div class="footer">MOVE YOUR CURSOR · HOVER THE CARDS</div>
+  </div>
+
+<script>
+  // ===== 鼠标视差 =====
+  const mesh = document.getElementById('mesh');
+  const stage = document.getElementById('stage');
+  let mx = innerWidth/2, my = innerHeight/2, tx = 0, ty = 0;
+  addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    tx = (mx/innerWidth - .5); ty = (my/innerHeight - .5);
+    mesh.style.transform = `translate(${tx*-40}px,${ty*-40}px)`;
+    stage.style.transform = `translate(${tx*18}px,${ty*18}px)`;
+  });
+
+  // ===== 卡片 3D 倾斜 =====
+  document.querySelectorAll('.card').forEach(c=>{
+    c.addEventListener('mousemove', e=>{
+      const r = c.getBoundingClientRect();
+      const px=(e.clientX-r.left)/r.width, py=(e.clientY-r.top)/r.height;
+      c.style.transform = `rotateX(${(py-.5)*-16}deg) rotateY(${(px-.5)*16}deg) translateZ(18px)`;
+    });
+    c.addEventListener('mouseleave', ()=> c.style.transform='');
+  });
+
+  // ===== 柔和萤火粒子 =====
+  const cv = document.getElementById('particles');
+  const ctx = cv.getContext('2d');
+  let W,H,parts=[];
+  function resize(){ W=cv.width=innerWidth; H=cv.height=innerHeight; }
+  resize(); addEventListener('resize', resize);
+
+  const N = Math.min(60, Math.floor(W*H/24000));
+  const hues = ['#6366f1','#ec4899','#06b6d4','#8b5cf6','#ffffff'];
+  for(let i=0;i<N;i++){
+    parts.push({
+      x:Math.random()*W, y:Math.random()*H,
+      r:Math.random()*1.8+0.6, vy:-(Math.random()*0.4+0.15),
+      vx:(Math.random()-.5)*0.2, a:Math.random()*0.5+0.3,
+      c:hues[i%hues.length]
+    });
+  }
+
+  function loop(){
+    ctx.clearRect(0,0,W,H);
+    for(const p of parts){
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.y < -10){ p.y = H+10; p.x = Math.random()*W; }
+      if(p.x < -10) p.x = W+10; if(p.x > W+10) p.x = -10;
+      const dx=p.x-mx, dy=p.y-my, d=Math.hypot(dx,dy);
+      if(d<110){ p.x+=dx/d*1.2; p.y+=dy/d*1.2; }
+      ctx.globalAlpha = p.a;
+      ctx.shadowBlur = 12; ctx.shadowColor = p.c;
+      ctx.fillStyle = p.c;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,7); ctx.fill();
+    }
+    ctx.globalAlpha = 1; ctx.shadowBlur = 0;
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+</script>
+</body>
+</html>
